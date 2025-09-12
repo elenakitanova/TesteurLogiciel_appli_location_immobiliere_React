@@ -1,0 +1,47 @@
+/* Styles pour le conteneur principal de la page */
+.accueil-page {
+  font-family: 'Montserrat', sans-serif;
+  color: #333;
+}
+
+/* Styles pour le conteneur de la galerie de cartes */
+.gallery-container {
+  background: #F6F6F6;
+  max-width: 1240px; /* Utilise une largeur maximale et est centré */
+  margin: 24px auto; /* Centre le conteneur horizontalement */
+  margin-top: 50px;
+  padding: 50px;
+  border-radius: 25px;
+}
+
+/* Styles pour la grille des cartes */
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 70px;
+}
+
+@media (max-width: 1240px) {
+  .gallery-container {
+    margin: 24px 20px;
+  }
+}
+
+@media (max-width: 900px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery-container {
+    padding: 20px;
+    border-radius: 15px;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}

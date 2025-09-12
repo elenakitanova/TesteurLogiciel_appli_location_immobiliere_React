@@ -1,0 +1,52 @@
+.banner {
+  position: relative;
+  width: 100%; /* Utilise une largeur fluide pour la responsivité */
+  max-width: 1240px; /* Limite la largeur à la valeur de la maquette */
+  height: 223px;
+  margin: 24px auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0px 4px 4px 0px #00000040;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 50px; /* Ajoute un padding pour aligner avec la galerie */
+}
+
+.banner-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Augmente l'opacité à 50% pour un effet plus sombre */
+  z-index: 2;
+}
+
+.banner-title {
+  position: relative;
+  z-index: 10;
+  color: #FFFFFF;
+  font-size: 3rem;
+  font-weight: bold;
+  padding: 1rem;
+  text-align: center;
+  text-shadow: 1px 1px 2px black;
+}
+
+/* Styles pour les petits écrans */
+@media (max-width: 768px) {
+  .banner-title {
+    font-size: 2rem;
+  }
+}

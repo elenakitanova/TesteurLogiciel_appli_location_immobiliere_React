@@ -5,11 +5,11 @@
   
   /* Utilisation de Flexbox pour aligner les éléments */
   display: flex;
-  gap: 60%;
+  gap: 65%;
   align-items: center; /* Centre les éléments verticalement */
   
   /* Ajout de marge autour */
-  margin: 50px;
+  margin: 50px 50px 20px 50px;
   padding: 0px;
 }
 
