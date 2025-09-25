@@ -18,9 +18,14 @@
 /* Styles pour la grille des cartes */
 .card-grid {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 70px;
+}
+
+.card-grid::after {
+  content: "";
+  flex-basis: 340px;
 }
 
 /* -----------------
