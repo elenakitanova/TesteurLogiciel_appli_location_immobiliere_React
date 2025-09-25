@@ -46,7 +46,20 @@
 
 /* Styles pour les petits écrans */
 @media (max-width: 768px) {
+  .banner {
+    padding: 0; /* Ajouté pour supprimer le rembourrage sur mobile */
+    max-width: 370px;
+    height: 160px;
+    border-radius: 10px;
+  }
+  
+  .banner-overlay {
+    width: 100%;
+  }
+
   .banner-title {
-    font-size: 2rem;
+    font-size: 25px;
+    padding: 0 20px;
+    text-align: left;
   }
 }

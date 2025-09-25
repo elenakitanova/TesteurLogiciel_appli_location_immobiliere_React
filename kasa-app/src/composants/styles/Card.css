@@ -55,3 +55,23 @@
   margin: 0;
   width: calc(100% - 40px);
 }
+
+/* -----------------
+   Responsive Design 
+   ----------------- */
+
+@media (max-width: 768px) {
+.card {
+    width: 100%;
+    max-width: 370px;
+    height: 290px;
+  }
+
+  .card-link {
+    width: 100%;
+  }
+  
+  .card-title {
+    font-size: 19px;
+    }
+}
