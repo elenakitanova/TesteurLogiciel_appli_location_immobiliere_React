@@ -18,15 +18,12 @@
 /* Styles pour la grille des cartes */
 .card-grid {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  gap: 70px;
+  justify-content: center;
+  justify-content: flex-start;
+  justify-content: space-between;
 }
 
-.card-grid::after {
-  content: "";
-  flex-basis: 340px;
-}
 
 /* -----------------
    Responsive Design 
