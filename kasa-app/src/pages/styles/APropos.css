@@ -1,0 +1,28 @@
+.apropos-container {
+  max-width: 1240px;
+  margin: 50px auto 20px;
+  padding: 0 20px;       
+  background: transparent;
+  border-radius: 0;     
+}
+
+/* Grille des collapses */
+.collapse-list {
+  display: flex;
+  flex-direction: column;
+  max-width: 900px;
+  gap: 24px; 
+  margin: 0 auto;    
+}
+
+/* -----------------
+   Responsive
+   ----------------- */
+@media (max-width: 768px) {
+
+.apropos-container {
+  margin: 24px 20px 0;
+  padding: 0;
+}
+
+}

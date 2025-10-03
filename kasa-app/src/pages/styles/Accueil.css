@@ -11,18 +11,21 @@
   min-width: 335px; 
   margin: 24px auto; /* Centre le conteneur horizontalement */
   margin-top: 50px;
+  margin-bottom: 0;
   padding: 50px;
   border-radius: 25px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Styles pour la grille des cartes */
 .card-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  justify-content: flex-start;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 340px); /* 3 colonnes fixes */
+  gap: 90px;
+  justify-content: center;               
 }
+
 
 
 /* -----------------
@@ -43,12 +46,20 @@
     padding: 0;
   }
   
-.card-grid {
-    flex-direction: column; 
-    align-items: center;
-    justify-content: center;
-    gap: 30px; 
-    margin-top: -19px;
-    margin-bottom: 5px;
+@media (max-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 340px);
+    gap: 40px;
   }
+}
+
+/* 1 colonne en mobile */
+@media (max-width: 768px) {
+  .card-grid {
+    grid-template-columns: 1fr;  /* prend toute la largeur dispo */
+  }
+  /* si ta Card a une largeur fixe, assure-toi qu'elle puisse s'étirer : */
+  .card-grid > * { width: 100%; }
+ 
+}
 }

@@ -20,26 +20,28 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: 1;
+  z-index: 0;
 }
 
 .banner-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Augmente l'opacité à 50% pour un effet plus sombre */
+  inset: 0; /* couvre 100% proprement */
+  background: rgba(0, 0, 0, 0.5);
   z-index: 2;
+  pointer-events: none; /* ne bloque pas d'éventuels clics */
 }
 
 .banner-title {
-  position: relative;
-  z-index: 10;
-  color: #FFFFFF;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;                     
+  padding: 0 50px;
+  color: #fff;
   font-size: 3rem;
   font-weight: bold;
-  padding: 1rem;
   text-align: center;
   text-shadow: 1px 1px 2px black;
 }
@@ -53,13 +55,11 @@
     border-radius: 10px;
   }
   
-  .banner-overlay {
-    width: 100%;
-  }
 
   .banner-title {
     font-size: 25px;
     padding: 0 20px;
     text-align: left;
+    justify-content: flex-start;
   }
 }

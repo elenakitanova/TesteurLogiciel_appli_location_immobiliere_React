@@ -1,22 +1,28 @@
 import React from 'react';
 import './styles/banner.css';
-import bannerImage from '../assets/images/bannerhome.png';
+import defaultBanner from '../assets/images/bannerhome.png';
 
-const Banner = () => {
+/**
+ * Banner réutilisable
+ * @param {string} imageUrl    - URL ou import de l'image (défaut: banner home)
+ * @param {string} title       - Titre affiché (si vide/undefined, pas de titre)
+ * @param {boolean} overlay    - Affiche l'overlay sombre (défaut: true)
+ * @param {string} alt         - Texte alternatif de l'image (défaut: "Bannière")
+ * @param {string} height      - Hauteur fixe (ex: "223px") si tu veux surcharger le CSS
+ */
+export default function Banner({
+  imageUrl = defaultBanner,
+  title,
+  overlay = true,
+  alt = 'Paysage de forêt et de montagnes',
+  height,
+}) {
+
   return (
-    <div className="banner">
-      <img
-        src={bannerImage}
-        alt="Paysage de forêt et de montagnes"
-        className="banner-image"
-      />
-      <div className="banner-overlay"></div>
-      
-      <h1 className="banner-title">
-        Chez vous, partout et ailleurs
-      </h1>
+    <div className="banner" style={height ? { height } : undefined}>
+      <img src={imageUrl} alt={alt} className="banner-image" />
+      {overlay && <div className="banner-overlay" aria-hidden="true" />}
+      {title ? <h1 className="banner-title">{title}</h1> : null}
     </div>
   );
-};
-
-export default Banner;
+}
