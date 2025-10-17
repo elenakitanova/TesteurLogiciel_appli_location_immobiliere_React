@@ -71,8 +71,13 @@
 @media (max-width: 768px) {
   .slideshow {
     height: 255px;
+    width: 370px;
     border-radius: 10px;
     margin: 16px auto;
+  }
+
+  .slideshow-image {
+  width: 370px;
   }
 
   .slideshow-arrow {
