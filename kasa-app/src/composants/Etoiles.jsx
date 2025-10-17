@@ -1,61 +1,34 @@
 import React from 'react';
-import './styles/Etoiles.css';
-
-function Star({ filled, size = 24, title, colorFilled = '#FF6060', colorEmpty = '#E3E3E3' }) {
-  // Icône étoile (path Material Design), colorée via fill
-  return (
-    <svg
-      className="star"
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      focusable="false"
-      role="img"
-    >
-      <title>{title}</title>
-      <path
-        d="M12 17.27L18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21z"
-        fill={filled ? colorFilled : colorEmpty}
-      />
-    </svg>
-  );
-}
 
 /**
- * Étoiles
- * @param {number|string} rating   - Note 0..5 (string dans l'API → on convertit)
- * @param {number} size            - Taille d’une étoile (px). Défault ~24px (maquette 24.75)
- * @param {number} gap             - Espace entre étoiles (px). Défault 12px (maquette ~18px)
- * @param {number} width           - Largeur du bloc (px). Défault 196 (maquette)
- * @param {number} height          - Hauteur du bloc (px). Défault 36 (maquette)
+ * Etoiles
+ * - rating : nombre de 0 à 5
+ * - Affiche 5 étoiles, remplies jusqu’à "rating"
  */
-export default function Etoiles({
-  rating = 0,
-  size = 24,
-  gap = 12,
-  width = 196,
-  height = 36,
-  className = '',
-}) {
-  const value = Math.max(0, Math.min(5, parseInt(rating, 10) || 0)); // clamp 0..5
-  const max = 5;
+export default function Etoiles({ rating = 0, size = 24 }) {
+  const value = Math.max(0, Math.min(5, Number(rating) || 0));
 
   return (
-    <div
-      className={`etoiles ${className}`}
-      role="img"
-      aria-label={`Note ${value} sur ${max}`}
-      style={{ width: `${width}px`, height: `${height}px`, gap: `${gap}px` }}
-    >
-      {Array.from({ length: max }).map((_, i) => (
-        <Star
-          key={i}
-          filled={i < value}
-          size={size}
-          title={i < value ? 'Étoile remplie' : 'Étoile vide'}
-        />
-      ))}
+    <div className="etoiles-strip" aria-label={`Note : ${value} sur 5`}>
+      {Array.from({ length: 5 }).map((_, i) => {
+        const filled = i < value;
+        return (
+          <svg
+            key={i}
+            width={size}
+            height={size}
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            style={{ verticalAlign: 'middle', marginLeft: i ? 6 : 0 }}
+          >
+            <path
+              d="M12 2l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 8.8l6.5-.9L12 2z"
+              fill={filled ? '#FF6060' : '#E3E3E3'}
+            />
+          </svg>
+        );
+      })}
     </div>
   );
 }
+

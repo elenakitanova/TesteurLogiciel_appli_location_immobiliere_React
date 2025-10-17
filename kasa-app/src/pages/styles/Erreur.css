@@ -1,0 +1,60 @@
+.erreur-page {
+  max-width: 1330px;
+  margin: 0 auto;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 20px;
+  gap: 24px;
+}
+
+
+.erreur-code {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 288px;
+  line-height: 1;
+  color: #FF6060;
+  margin: 0;
+}
+
+/* Message sous le 404 */
+.erreur-message {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 1.43;
+  color: #FF6060;
+  margin: 0;
+}
+
+/* Lien retour accueil (souligné) */
+.erreur-link {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.43;
+  color: #000;
+  text-decoration: underline;
+  text-underline-offset: 2px; 
+}
+
+/* -------- Responsive -------- */
+@media (max-width: 768px) {
+  .erreur-page { 
+    min-height: 50vh;
+    gap: 16px;
+  }
+  .erreur-code {
+    font-size: 96px;
+  }
+  .erreur-message {
+    font-size: 18px;
+  }
+  .erreur-link {
+    font-size: 14px;
+  }
+}

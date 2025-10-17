@@ -112,6 +112,15 @@
   line-height: 1.4;
 }
 
+.logement-header .header-right .hote :is(.hote__name, .hote-name) {
+  color: #FF6060 !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 18px !important;
+ 
+}
+
+
 /* ===========================
    Responsive
    =========================== */

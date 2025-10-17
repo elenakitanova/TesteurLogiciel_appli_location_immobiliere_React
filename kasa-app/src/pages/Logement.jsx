@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';// useParams = lire l'id présent dans l'URL ; useNavigate = rediriger vers une autre page
+import { useParams, useNavigate } from 'react-router-dom'; // useParams = lire l'id dans l'URL ; useNavigate = redirection
 import Slideshow from '../composants/Slideshow.jsx';
 import Hote from '../composants/Hote.jsx';
 import TitreLieu from '../composants/TitreLieu.jsx';
@@ -8,128 +8,130 @@ import Tag from '../composants/Tag.jsx';
 import Collapse from '../composants/Collapse.jsx';
 import './styles/Logement.css';
 
- /**
- * Page Logement
- * - Récupère l'id du logement depuis l'URL
- * - Va chercher les infos du logement auprès de l'API
- * - Si l'id n'existe pas → redirige vers la page 404
- * - Affiche : le diaporama de photos, les infos du logement, puis 2 blocs déroulants
+/**
+ *  1) Récupérer l'id du logement depuis l'URL (ex: /logement/af6d2d48)
+ *  2) Appeler l’API : GET /api/properties/:id
+ *  3) Si l’id est inconnu → rediriger vers /404 (instruction du brief)
+ *  4) Afficher le diaporama + le bandeau d’infos + 2 collapses
  */
-
 export default function Logement() {
-  // Récupération de l'ID fourni dans l'URL (ex: /logement/abc123)
+  // 1) id présent dans l'URL. Exemple : /logement/123 → id = "123"
   const { id } = useParams();
-  // Permet d'aller vers une autre page par code, ici redirection vers page 404
+
+  // 2) navigate permet de rediriger (ici vers /404 en cas d’ID invalide)
   const navigate = useNavigate();
 
-  const [property, setProperty] = useState(null); // State local 
-  // property = les données du logement récupérées depuis l'API
-  const [loading, setLoading] = useState(true); // State local 
-   //loading = indicateur de chargement (spinner/placeholder)
+  // State local : la fiche logement et l’état de chargement
+  const [property, setProperty] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-   /**
-   * Au premier affichage (et si l'id change), on va chercher les données du logement
-   * Si on quitte la page avant la fin, on évite de mettre à jour l'état
+  /**
+   * Au montage (et à chaque changement d’id), on va chercher la fiche du logement
+   * Version simple (pas de “cancel flag” ni d’optimisation avancée)
    */
-
   useEffect(() => {
-    // Flag anti-fuite mémoire : évite setState si le composant est démonté
-    let cancelled = false; // "vrai" si on quitte la page avant la fin du fetch
-
     async function fetchProperty() {
-         // Fonction asynchrone qui va chercher la fiche logement
       try {
+        // Appel API : GET /api/properties/:id
         const res = await fetch(`http://localhost:8080/api/properties/${id}`);
-        // Appel API pour récupérer le logement par ID
-        
-        if (res.status === 404) {
-        // Cas particulier : l'API dit "404 = pas trouvé" → redirection page d'erreur
+
+        // Si l’API ne renvoie pas 2xx, on considère l’id invalide → /404
+        if (!res.ok) {
           navigate('/404', { replace: true });
           return;
         }
-        if (!res.ok) {
-            // Toute autre réponse non OK → on déclenche une erreur
-          throw new Error(`HTTP ${res.status}`);
-        }
 
-        const data = await res.json(); 
-        // Transforme la réponse en JSON 
-        if (!cancelled) setProperty(data);
-        // on enregistre les données si on est encore sur la page
+        // Réponse OK → on lit le JSON et on le met en state
+        const data = await res.json();
+        setProperty(data);
       } catch {
+        // Erreur réseau/serveur → on reste simple : redirection 404
         navigate('/404', { replace: true });
-        // En cas d'erreur réseau / serveur / id invalide → redirection 404
       } finally {
-        // on coupe l'état "chargement"
-        if (!cancelled) setLoading(false);
+        // Dans tous les cas, on coupe l’indicateur de chargement
+        setLoading(false);
       }
     }
-
     fetchProperty();
-    // Lance le chargement
-    return () => { cancelled = true; };
-    // Si on quitte la page : on marque l'appel comme "annulé"
   }, [id, navigate]);
 
+  // Pendant le chargement : petit message (placeholder)
   if (loading) {
     return <main className="logement-page">Chargement...</main>;
-     // Pendant le chargement : petit message
   }
 
+  // Par sécurité : si on arrive ici sans data (ex: redirection déjà partie), on ne rend rien
   if (!property) return null;
-  // Sécurité : si rien à afficher (ex: redirection déjà faite), on ne rend rien
 
-  // Normalisation des données :
-  // Photos à afficher dans le diaporama (tableau vide si rien)
-  const images = Array.isArray(property.pictures) ? property.pictures : [];
-  const rating = Math.max(0, Math.min(5, parseInt(property?.rating, 10) || 0));
-  // Note convertie proprement en entier entre 0 et 5 pour le composant Etoiles
-  
+  // --- Données prêtes pour l’affichage ---
+
+  // Liste d’images pour le diaporama (tableau vide si absent)
+  const images = property.pictures || [];
+
+  // Note : on convertit simplement en nombre (suffisant pour ce projet)
+  const rating = Number(property.rating) || 0;
+
+  // --- Rendu de la page ---
+
   return (
-    // Contenu principal de la page "Logement"
     <main className="logement-page">
-      {/* Slideshow */}
+      {/*
+        1) Diaporama (Slideshow)
+        - Reçoit la liste des images et un texte alt de base (le titre)
+        - Gère en interne les flèches et le compteur 1/N (pas de clavier ici)
+      */}
       <Slideshow images={images} altBase={property?.title || 'Photo logement'} />
 
-      {/* Barre d'infos sous le carrousel :
-        - à gauche : titre du logement, ville/région, tags
-        - à droite : infos de l'hôte (nom + photo) puis la note sous forme d'étoiles */}
+      {/*
+        2) Bandeau d’infos sous le diaporama
+           Desktop : 
+             - Colonne gauche : titre + lieu + tags
+             - Colonne droite : hôte (nom + photo) + étoiles
+           Mobile :
+             - Empilé verticalement (géré via CSS)
+      */}
       <section className="logement-header" aria-label="Informations du logement">
-        
+        {/* Colonne gauche : Titre/Lieu + Tags */}
         <div className="header-left">
-            {/* Colonne gauche : Titre + Lieu + Tags */}
-             
+          {/* Titre (ex: “Cozy loft…”) + Localisation (ex: “Paris, Île-de-France”) */}
           <TitreLieu title={property.title} location={property.location} />
-           {/* Titre du logement + localisation (ex: Paris, Île-de-France) */}
-          
+
+          {/* Tags : badges sur une ligne, scrollables si trop nombreux */}
           <div className="tags-row">
-            {/* Liste des tags/badges du logement (affichés sur une ligne, défilables si trop nombreux) */}
             {(property.tags || []).map((t, i) => (
               <Tag key={`${t}-${i}`} text={t} />
             ))}
           </div>
         </div>
 
-        {/* Colonne droite : Hôte (haut) + Étoiles (bas) */}
+        {/* Colonne droite : Hôte + Étoiles */}
         <div className="header-right">
-          <Hote name={property?.host?.name} picture={property?.host?.picture} align="right" />
-          {/* Carte hôte : nom et photo du propriétaire/gestionnaire du logement */}
-          
+          {/* Nom + photo de l’hôte */}
+          <div className="hote">
+            <div className="hote-name">{property?.host?.name}</div>
+            <img
+              className="hote-picture"
+              src={property?.host?.picture}
+              alt={property?.host?.name}
+            />
+          </div>
+
+          {/* Note en étoiles (0 à 5) */}
           <div className="etoiles">
-            {/* Note du logement représentée par 0 à 5 étoiles */}
             <Etoiles rating={rating} />
           </div>
         </div>
       </section>
 
-      {/* Deux collapses repliables : description du logement et équipements disponibles */}
+      {/*
+        3) Deux sections déroulantes (Collapse) : Description et Équipements
+           - On réutilise le même composant que sur A Propos
+      */}
       <section className="logement-collapses" aria-label="Description et équipements">
-        {/* Bloc "Description" : texte de présentation du logement */}
-        <Collapse
-          title="Description" 
-          content={property?.description || ''} 
-        />
-        {/* Bloc "Équipements" : liste des équipements (affichés en puces) */}
+        {/* Texte de présentation du logement */}
+        <Collapse title="Description" content={property?.description || ''} />
+
+        {/* Liste des équipements (ul/li) */}
         <Collapse
           title="Équipements"
           content={

@@ -2,8 +2,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  max-width: 1330px;     /* même largeur que le Slideshow */
-  margin: 0 auto;        /* centré dans la page */
+  max-width: 1330px;
+  margin: 0 auto; /* centré dans la page */
 }
 
 .hote--right { justify-content: flex-end; }
@@ -15,7 +15,7 @@
   font-size: 18px;
   line-height: 1.2;
   color: #FF6060;
-  text-align: right;     /* maquette : texte aligné à droite */
+  text-align: right; 
 }
 
 .hote__avatar {
