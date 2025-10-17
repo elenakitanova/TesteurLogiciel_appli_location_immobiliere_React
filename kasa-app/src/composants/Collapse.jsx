@@ -1,4 +1,3 @@
-// src/composants/Collapse.jsx
 import React, { useState, useMemo } from 'react';
 import './styles/Collapse.css';
 

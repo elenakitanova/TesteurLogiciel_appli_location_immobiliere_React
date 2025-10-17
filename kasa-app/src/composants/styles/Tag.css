@@ -1,0 +1,32 @@
+/* une étiquette réutilisable */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 25px;
+  padding: 0 12px;            /* largeur auto selon le texte */
+  background: #FF6060;        /* tag rempli */
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;           /* Bold */
+  font-size: 14px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+
+.tags-row {
+  width: 100%;
+  max-width: 370px;         
+  margin: 16px auto 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* optionnel: version "vide" si un jour on vodra des tags non remplis */
+.tag--empty {
+  background: #E3E3E3;        /* tag non rempli */
+  color: #000;
+}

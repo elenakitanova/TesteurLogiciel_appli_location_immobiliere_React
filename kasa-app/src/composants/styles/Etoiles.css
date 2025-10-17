@@ -1,0 +1,18 @@
+.etoiles {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* left align */
+}
+
+.etoiles .star {
+  display: block;
+  /* la taille et l’espacement viennent des props (inline style + width/height du SVG) */
+}
+
+/* (Optionnel) Ajustement mobile si besoin */
+@media (max-width: 768px) {
+  .etoiles {
+    /* Exemple : réduire légèrement l’espace */
+    gap: 10px;
+  }
+}
