@@ -20,11 +20,20 @@
   align-items: start;
 }
 
+.logement-header .header-left .tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  max-width: 100%;
+  margin-top: 12px;
+  overflow: visible;
+}
+
 /* Colonne gauche : occupe les 2 lignes */
 .header-left {
-  grid-column: 1;
-  grid-row: 1 / span 2;
   min-width: 0;
+  overflow: visible;
 }
 
 /* Colonne droite : hôte (haut) + étoiles (bas) */

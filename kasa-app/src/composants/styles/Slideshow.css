@@ -85,13 +85,18 @@
     height: 48px;
   }
 
-  .slideshow-arrow.left  { left: 12px; }
-  .slideshow-arrow.right { right: 12px; }
-
   .slideshow-counter {
-    font-size: 12px;
-    bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
   }
+  .slideshow-arrow svg path {
+    stroke-width: 4;
+  }
+
+  .slideshow-arrow {
+  width: 60px;            
+  height: 60px;
+}
 }
 
 

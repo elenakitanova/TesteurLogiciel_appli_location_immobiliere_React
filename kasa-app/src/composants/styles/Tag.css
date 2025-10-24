@@ -3,7 +3,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   height: 25px;
   padding: 0 12px;            /* largeur auto selon le texte */
   background: #FF6060;        /* tag rempli */
@@ -15,18 +14,31 @@
   white-space: nowrap;
 }
 
-
 .tags-row {
   width: 100%;
-  max-width: 370px;         
-  margin: 16px auto 0;
+  max-width: 100%;         
+  margin: 16px 0 0;
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+/* Chaque tag ne se coupe pas au milieu d’un mot */
+.tag {
+  white-space: nowrap; /* le badge garde son texte sur une seule ligne */
 }
 
 /* optionnel: version "vide" si un jour on vodra des tags non remplis */
 .tag--empty {
   background: #E3E3E3;        /* tag non rempli */
   color: #000;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+ .tags-row {
+  margin-top: 12px;
+  max-width: 100%;
+  }
 }
