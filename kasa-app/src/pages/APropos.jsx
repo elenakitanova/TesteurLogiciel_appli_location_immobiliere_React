@@ -4,11 +4,10 @@ import Collapse from '../composants/Collapse.jsx';
 import './styles/APropos.css';
 import Bannerapropos from '../assets/images/Bannerapropos.png'; 
 
-/**
- * Données statiques de la page "À propos".
- * Chaque item alimente un <Collapse /> : un titre + un texte.
- * (On les laisse hors du composant pour éviter de recréer le tableau à chaque rendu.)
- */
+
+// Données statiques pour les 4 accordéons
+// Chaque item alimente un <Collapse /> : un titre + un texte
+// On les laisse hors du composant pour éviter de recréer le tableau à chaque rendu
 const aboutData = [
   {
     id: 'fiabilite', // clé unique pour React (utilisée comme "key" dans la liste)
@@ -40,21 +39,21 @@ export default function APropos() {
   return (
     // Conteneur principal de la page "À propos" (sert surtout au layout/CSS)
     <div className="apropos-page">
-      {/*
-        Bannière spécifique à la page À propos :
-        - imageUrl : on passe l’image locale importée
-        - overlay={false} : on désactive le voile sombre si ton composant le gère
+      
+      <Banner imageUrl={Bannerapropos} overlay={false} alt="Bannière À propos" /> 
+      {/* Utilisation conditionnelle de Banner (overlay=false) => on désactive le voile sombre 
+      imageUrl : on passe l’image locale importée
       */}
-      <Banner imageUrl={Bannerapropos} overlay={false} alt="Bannière À propos" />
 
-      {/*
+      <section className="apropos-container" aria-label="Informations à propos de Kasa">
+        {/*
         Conteneur des sections 
         liste de Collapse rendus à partir de aboutData
       */}
-      <section className="apropos-container" aria-label="Informations à propos de Kasa">
         <div className="collapse-list">
           {/*
-            On “map” le tableau aboutData pour générer un <Collapse /> par item
+          Mapping des données statiques du le tableau aboutData pour générer les 4 Collapse 
+          un <Collapse /> par item
             - key={id} : indispensable pour les listes React (améliore les performances et évite des warnings)
             - title / content : props attendues par le composant Collapse
           */}

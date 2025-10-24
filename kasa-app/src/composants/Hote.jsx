@@ -1,4 +1,3 @@
-// src/composants/Hote.jsx
 import React from 'react';
 import './styles/Hote.css';
 

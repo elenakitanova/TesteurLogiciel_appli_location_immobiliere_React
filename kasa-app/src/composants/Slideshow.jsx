@@ -1,108 +1,81 @@
-import React, { useState } from 'react'; // useState : stocker l’index de l’image courante
-import './styles/Slideshow.css'; // styles du carrousel
+import React, { useState } from 'react'; // Importe React et le hook useState (pour mémoriser l’index de l’image affichée)
+import './styles/Slideshow.css';
 
-/**
- * Props :
- *  - images : tableau d’URLs d’images (ex: ['a.jpg','b.jpg'])
- *  - altBase : texte de base pour l’attribut alt (ex: "Photo logement")
- *  - height : hauteur fixe optionnelle (ex: "415px") si besoin de surcharger le CSS
- *
- * Fonctionnalités :
- *  - flèches gauche/droite (avec boucle quand on arrive au bout)
- *  - navigation clavier (← →) quand le carrousel a le focus
- *  - compteur "1/N"
- *  - si une seule image → pas de flèches, pas de compteur
- */
+// - images : tableau d’URLs
+// - height : (optionnel) force une hauteur via style inline
 export default function Slideshow({ images = [], altBase = 'Photo logement', height }) {
-  // index de l’image affichée
+  // État local gérant l'image affichée
+  
   const [index, setIndex] = useState(0);
+  // index = position de l’image courante dans le tableau "images"
+  // setIndex = fonction pour changer cette position
 
-  // nombre total d’images (si images n’est pas un tableau, total = 0)
-  const total = images?.length ?? 0;
+  const total = Array.isArray(images) ? images.length : 0;
+  // Nombre total d’images (si "images" n’est pas un tableau, total = 0)
 
-  // aucun visuel à afficher → on ne rend rien
-  if (!total) return null;
+  if (total === 0) return null;
+  // Si aucune image, on n’affiche rien (évite un carrousel vide)
 
-  // passe à l’image suivante (et revient à la 1re après la dernière)
-  function goNext() {
-    setIndex((i) => (i + 1) % total);
-  }
+  const next = () => setIndex(i => (i + 1) % total);
+  // Logique de navigation cyclique (le modulo %)
+  // Passe à l’image suivante, et revient au début après la dernière (boucle)
 
-  // passe à l’image précédente (et va à la dernière si on est à la 1re)
-  function goPrev() {
-    setIndex((i) => (i - 1 + total) % total);
-  }
+  const prev = () => setIndex(i => (i - 1 + total) % total);
+  // Logique de navigation cyclique (le modulo %)
+  // Passe à l’image précédente, et va à la dernière si on est au début (boucle)
 
-  // on montre les contrôles seulement s’il y a plus d’une image
   const showControls = total > 1;
+  // Affiche les flèches + compteur uniquement s’il y a plus d’une image
 
+  // Rendu du carrousel
   return (
-    <div
-      className="slideshow"                           // conteneur principal
-      style={height ? { height } : undefined}         // permet de forcer la hauteur si prop fournie
-      role="region"                                   // accessibilité : zone distincte
-      aria-label="Galerie photos du logement"         // label lisible par les lecteurs d’écran
-      tabIndex={0}                                    // rend le div focusable (pour capter les flèches clavier)
-      onKeyDown={(e) => {                             // navigation clavier
-        if (!showControls) return;
-        if (e.key === 'ArrowRight') goNext();
-        if (e.key === 'ArrowLeft')  goPrev();
-      }}
-    >
-      {/* Image courante (en fonction de l’index) */}
+    // Conteneur principal du carrousel
+    // - style(height) si la prop "height" est fournie (sinon, laisse le CSS gérer)
+    <div className="slideshow" style={height ? { height } : undefined}>
+      {/* Image courante (selon "index") */}
       <img
-        src={images[index]}
-        alt={`${altBase} ${index + 1}/${total}`}      // alt dynamique "Photo logement 2/5"
-        className="slideshow-image"
-        draggable="false"                              // évite le drag de l’image au clic
+        src={images[index]}                       // Utilise l'index pour afficher l'image courante
+        alt={`${altBase} ${index + 1}/${total}`}  // Alt dynamique : "Photo logement 2/5"
+        className="slideshow-image"               // Classe pour le style (cover, etc.)
+        draggable="false"                         // Empêche le « drag » d’image au clic
       />
 
-      {/* Flèches + compteur visibles seulement s’il y a > 1 image */}
+      {/* Affichage conditionnel des contrôles (flèches et compteur) */}
       {showControls && (
         <>
-          {/* Flèche gauche (image précédente) */}
-          <button
-            className="slideshow-arrow left"
-            onClick={goPrev}
-            aria-label="Image précédente"             // accessibilité
-            type="button"
-          >
-            {/* Icône de flèche (traits carrés, plus épais) */}
-            <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+          {/* Bouton flèche gauche (image précédente) */}
+          <button className="slideshow-arrow left" type="button" onClick={prev}>
+            {/* Icône SVG (chevron gauche) */}
+            {/* width/height à 100% → le SVG occupe toute la zone du bouton, sans bloc 150x150 */}
+            <svg viewBox="0 0 48 48" width="100%" height="100%">
               <path
-                d="M28 36 L16 24 L28 12"             // chevron gauche
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="6"
-                strokeLinecap="butt"                  // bouts carrés (pas arrondis)
-                strokeLinejoin="miter"                // angles pointus (miroir de la maquette)
-                vectorEffect="non-scaling-stroke"     // épaisseur constante au redimensionnement
+                d="M28 36 L16 24 L28 12"   // Trois points reliés → chevron gauche
+                fill="none"                 // Pas de remplissage (trait seulement)
+                stroke="currentColor"       // Utilise la couleur courante (définie en CSS)
+                strokeWidth="6"             // Épaisseur du trait
+                strokeLinecap="butt"        // Extrémités du trait droites 
+                strokeLinejoin="miter"      // Angles pointus 
               />
             </svg>
           </button>
 
-          {/* Flèche droite (image suivante) */}
-          <button
-            className="slideshow-arrow right"
-            onClick={goNext}
-            aria-label="Image suivante"
-            type="button"
-          >
-            <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+          {/* Bouton flèche droite (image suivante) */}
+          <button className="slideshow-arrow right" type="button" onClick={next}>
+            {/* Icône SVG (chevron droit) */}
+            <svg viewBox="0 0 48 48" width="100%" height="100%">
               <path
-                d="M20 12 L32 24 L20 36"             // chevron droit
+                d="M20 12 L32 24 L20 36"   // Trois points reliés → chevron droit
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="6"
                 strokeLinecap="butt"
                 strokeLinejoin="miter"
-                vectorEffect="non-scaling-stroke"
               />
             </svg>
           </button>
 
-          {/* Compteur centré : "imageCourante / total" */}
-          <div className="slideshow-counter" aria-live="polite">
+          {/* Compteur de position (ex: 1/4) */}
+          <div className="slideshow-counter">
             {index + 1}/{total}
           </div>
         </>
@@ -110,6 +83,7 @@ export default function Slideshow({ images = [], altBase = 'Photo logement', hei
     </div>
   );
 }
+
 
 
 

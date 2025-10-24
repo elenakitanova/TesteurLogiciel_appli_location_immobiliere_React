@@ -1,4 +1,3 @@
-// src/pages/Accueil.jsx
 import React, { useState, useEffect } from 'react';
 import Banner from '../composants/Banner.jsx';
 import Card from '../composants/Card.jsx';
@@ -9,58 +8,62 @@ import './styles/Accueil.css';
  * - Récupère la liste des logements depuis l’API.
  * - Affiche une bannière + une grille de cartes.
  */
-export default function Accueil() {
-  // State : la liste des logements à afficher
-  const [properties, setProperties] = useState([]);
-  // State : indicateur de chargement (pendant l’appel API)
-  const [loading, setLoading] = useState(true);
-  // State : message d’erreur simple si l’appel échoue
-  const [error, setError] = useState(null);
 
+// 1. Initialisation des états
+export default function Accueil() {
+  // Hook useState : Stocke la liste des logements après l'appel API
+  const [properties, setProperties] = useState([]); // Données
+  // Hook useState : Indique l'état de chargement initial (true au départ)
+  const [loading, setLoading] = useState(true); // UX
+  // Hook useState : message d’erreur simple si l’appel échoue / stocke une éventuelle erreur de fetch
+  const [error, setError] = useState(null); // Gestion d'erreur
+
+// 2. Récupération des données au montage (un seul appel)
   useEffect(() => {
-    // Appel API (version simple) déclenché au montage de la page
+    // Appel API déclenché au montage de la page / effet déclenché une seule fois au montage du composant (grâce à [])
     fetch('http://localhost:8080/api/properties')
       .then((res) => {
-        // Si le serveur ne répond pas en 2xx, on lève une erreur
+        // Logique de gestion des erreurs si le serveur ne répond pas (codes non-2xx)
         if (!res.ok) throw new Error('Erreur réseau/serveur');
         // Sinon on lit la réponse JSON
         return res.json();
       })
       .then((data) => {
-        // On s’attend à un tableau → sinon on force un tableau vide
+        // Met à jour l'état avec les données récupérées On s’attend à un tableau → sinon on force un tableau vide
         setProperties(Array.isArray(data) ? data : []);
       })
       .catch((e) => {
-        // On stocke un message d’erreur lisible
+        // Capture et affiche l'erreur si le fetch échoue 
         setError(e.message);
       })
       .finally(() => {
-        // Dans tous les cas, on sort du mode "chargement"
+        // Termine l'état de chargement, peu importe le succès ou l'échec
         setLoading(false);
       });
-  }, []); // [] = ne s’exécute qu’une fois au premier rendu
+  }, []); //[] : assure l'exécution unique au montage
 
-  // État "chargement" : simple placeholder texte
+
+  // 3. Rendu conditionnel des états (loading/error)
   if (loading) {
     return <div className="text-center py-8">Chargement des propriétés…</div>;
-  }
+  } // Affichage conditionnel de l'état "chargement"
 
-  // État "erreur" : message utilisateur simple
   if (error) {
     return <div className="text-center py-8 text-red-500">Erreur : {error}</div>;
-  }
+  }// Affichage conditionnel de l'état "erreur"
 
-  // Rendu principal de la page
+
+  // 4. Rendu principal de l apage (utilisation des composants)
   return (
     <div className="accueil-page">
       {/* Bannière statique en haut de page */}
       <Banner
-        title="Chez vous, partout et ailleurs"
-        overlay
+        title="Chez vous, partout et ailleurs"  // Le titre est passé en prop
+        overlay                                 // On force le filtre sombre
         alt="Paysage de forêt et de montagnes"
       />
 
-      {/* Grille des logements (cartes) */}
+      {/* Génération de la Grille des logements (cartes) */}
       <section className="gallery-container">
         <div className="card-grid">
           {properties.length > 0 ? (

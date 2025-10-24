@@ -8,36 +8,35 @@ import Tag from '../composants/Tag.jsx';
 import Collapse from '../composants/Collapse.jsx';
 import './styles/Logement.css';
 
-/**
- *  1) Récupérer l'id du logement depuis l'URL (ex: /logement/af6d2d48)
- *  2) Appeler l’API : GET /api/properties/:id
- *  3) Si l’id est inconnu → rediriger vers /404 (instruction du brief)
- *  4) Afficher le diaporama + le bandeau d’infos + 2 collapses
+/** La page : 
+ * 1. Récupère le paramètre d'URL dynamique (:id) via useParams().
+ * 2. Lance l'appel API ciblé GET /api/properties/:id.
+ * 3. Gère la redirection 404 si l'ID n'est pas trouvé (via useNavigate).
  */
 export default function Logement() {
-  // 1) id présent dans l'URL. Exemple : /logement/123 → id = "123"
+  // 1) Extraction du paramètre id présent dans l'URL et du hook de navigation. Exemple : /logement/123 → id = "123"
   const { id } = useParams();
 
-  // 2) navigate permet de rediriger (ici vers /404 en cas d’ID invalide)
+  // Fonction pour gérer les redirections programmatiques, permet de rediriger (ici vers /404 en cas d’ID invalide)
   const navigate = useNavigate();
 
-  // State local : la fiche logement et l’état de chargement
+  // État pour stocker la fiche de logement (null initialement) et l'état de chargement
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
 
   /**
    * Au montage (et à chaque changement d’id), on va chercher la fiche du logement
-   * Version simple (pas de “cancel flag” ni d’optimisation avancée)
    */
   useEffect(() => {
     async function fetchProperty() {
       try {
-        // Appel API : GET /api/properties/:id
+        // Appel API ciblé utilisant l'ID récupéré : GET /api/properties/:id
         const res = await fetch(`http://localhost:8080/api/properties/${id}`);
 
-        // Si l’API ne renvoie pas 2xx, on considère l’id invalide → /404
+        // 2. Gestion d'erreur critique : Redirection 404
+        // Point de contrôle crucial : si la réponse n'est pas OK, on considère l’id invalide → on redirige /404
         if (!res.ok) {
-          navigate('/404', { replace: true });
+          navigate('/404', { replace: true }); // Redirection en cas d'ID inconnu
           return;
         }
 
@@ -45,15 +44,17 @@ export default function Logement() {
         const data = await res.json();
         setProperty(data);
       } catch {
-        // Erreur réseau/serveur → on reste simple : redirection 404
+        // En cas d'erreur réseau ou de parsing, on redirige également vers la page 404
         navigate('/404', { replace: true });
       } finally {
         // Dans tous les cas, on coupe l’indicateur de chargement
         setLoading(false);
       }
     }
+
+    // L'effet se ré-exécute uniquement si l'ID dans l'URL change
     fetchProperty();
-  }, [id, navigate]);
+  }, [id, navigate]); // Dépendances : s'exécute si l'ID ou l'objet navigate change, navigate (pour la stabilité du hook)
 
   // Pendant le chargement : petit message (placeholder)
   if (loading) {
@@ -66,19 +67,21 @@ export default function Logement() {
   // --- Données prêtes pour l’affichage ---
 
   // Liste d’images pour le diaporama (tableau vide si absent)
+  // Préparation des props : Assurer qu'elles sont des tableaux/nombres valides
   const images = property.pictures || [];
 
-  // Note : on convertit simplement en nombre (suffisant pour ce projet)
+  // On convertit simplement en nombre
   const rating = Number(property.rating) || 0;
 
-  // --- Rendu de la page ---
-
+  // --- Rendu de la page de détail ---
+{/* Composition de la page avec les props extraites de 'property' */}
   return (
-    <main className="logement-page">
+    <main className="logement-page"> 
+    
       {/*
         1) Diaporama (Slideshow)
         - Reçoit la liste des images et un texte alt de base (le titre)
-        - Gère en interne les flèches et le compteur 1/N (pas de clavier ici)
+        - Gère en interne les flèches (index) et le compteur 1/N / la navigation cyclique 
       */}
       <Slideshow images={images} altBase={property?.title || 'Photo logement'} />
 
@@ -95,9 +98,11 @@ export default function Logement() {
         <div className="header-left">
           {/* Titre (ex: “Cozy loft…”) + Localisation (ex: “Paris, Île-de-France”) */}
           <TitreLieu title={property.title} location={property.location} />
+          {/* Tags : itération */}
 
           {/* Tags : badges sur une ligne, scrollables si trop nombreux */}
           <div className="tags-row">
+            {/* Mapping des tags avec une clé unique */}
             {(property.tags || []).map((t, i) => (
               <Tag key={`${t}-${i}`} text={t} />
             ))}
@@ -106,7 +111,7 @@ export default function Logement() {
 
         {/* Colonne droite : Hôte + Étoiles */}
         <div className="header-right">
-          {/* Nom + photo de l’hôte */}
+          {/* {/* Hôte (Nom + photo de l’hôte )*/} 
           <div className="hote">
             <div className="hote-name">{property?.host?.name}</div>
             <img
@@ -116,15 +121,17 @@ export default function Logement() {
             />
           </div>
 
-          {/* Note en étoiles (0 à 5) */}
+           {/* Génération des étoiles basée sur le rating */}
+            {/* Note en étoiles (0 à 5) */}
           <div className="etoiles">
             <Etoiles rating={rating} />
+            {/* prop 'rating' est convertie en nombre */}
           </div>
         </div>
       </section>
 
       {/*
-        3) Deux sections déroulantes (Collapse) : Description et Équipements
+        3) Deux sections déroulantes (COLLAPSE) : Description et Équipements
            - On réutilise le même composant que sur A Propos
       */}
       <section className="logement-collapses" aria-label="Description et équipements">

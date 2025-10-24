@@ -7,10 +7,13 @@ import React from 'react';
  */
 export default function Etoiles({ rating = 0, size = 24 }) {
   const value = Math.max(0, Math.min(5, Number(rating) || 0));
+  // S'assure que la note est bien entre 0 et 5
 
   return (
     <div className="etoiles-strip" aria-label={`Note : ${value} sur 5`}>
+        {/* Crée un tableau de 5 éléments pour itérer */}
       {Array.from({ length: 5 }).map((_, i) => {
+        // Logique de remplissage : Si l'index i est inférieur à la note, l'étoile est remplie
         const filled = i < value;
         return (
           <svg

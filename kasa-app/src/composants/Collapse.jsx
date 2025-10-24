@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './styles/Collapse.css';
 
 /**
- * Composant Collapse (liste déroulante) — version simplifiée
  * - Props :
  *    - title   : texte de l’entête
  *    - content : contenu à afficher quand c’est ouvert (string ou JSX)
@@ -12,7 +11,8 @@ import './styles/Collapse.css';
  *      ce qui déclenche les styles/animations dans le CSS.
  */
 export default function Collapse({ title, content }) {
-  // État local : true = ouvert / false = fermé
+  // État privé/local  : gère si le collapse est ouvert ou fermé
+  // true = ouvert / false = fermé
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -33,6 +33,7 @@ export default function Collapse({ title, content }) {
 
         {/* Icône chevron à droite (SVG inline). Haut si ouvert, bas sinon. */}
         <span className="collapse-icon" aria-hidden="true">
+              {/* L'icône change en fonction de l'état isOpen */}
           {isOpen ? (
             // Chevron vers le haut
             <svg width="24" height="24" viewBox="0 0 24 24">
@@ -63,10 +64,11 @@ export default function Collapse({ title, content }) {
 
       {/*
         Contenu déroulant :
-        - La classe 'open' passe de max-height:0 à une grande valeur + opacity:1 (voir CSS).
-        - On rend 'content' tel quel (string ou JSX), enveloppé dans un conteneur avec padding.
+        - La classe 'open' passe de max-height:0 à une grande valeur + opacity:1 (voir CSS)
+        - On rend 'content' tel quel (string ou JSX), enveloppé dans un conteneur avec padding
       */}
       <div className={`collapse-content ${isOpen ? 'open' : ''}`}>
+        {/* La classe 'open' déclenche les animations CSS sur la max-height */}
         <div className="collapse-text-content">
           {content}
         </div>
