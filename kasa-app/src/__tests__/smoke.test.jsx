@@ -1,4 +1,3 @@
-// src/__tests__/smoke.test.jsx
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 

@@ -27,6 +27,7 @@ export default function Collapse({ title, content }) {
         className={`collapse-header ${isOpen ? 'open' : ''}`}
         onClick={() => setIsOpen((v) => !v)}
         type="button"
+        aria-expanded={isOpen ? 'true' : 'false'} 
       >
         {/* Titre à gauche */}
         <span className="collapse-title">{title}</span>
