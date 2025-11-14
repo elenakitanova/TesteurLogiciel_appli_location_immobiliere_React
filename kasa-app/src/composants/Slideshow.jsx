@@ -2,51 +2,45 @@ import React, { useState } from 'react'; // Importe React et le hook useState (p
 import './styles/Slideshow.css';
 
 // - images : tableau d’URLs
-// - height : (optionnel) force une hauteur via style inline
-export default function Slideshow({ images = [], altBase = 'Photo logement', height }) {
-  // État local gérant l'image affichée
-  
+// Reçoit le tableau de toutes les URLs d'images via la prop images depuis la page Logement
+export default function Slideshow({ images = [], altBase = 'Photo logement' }) {
+  // État local gérant l'image affichée, on commence à 0 (la première image)
   const [index, setIndex] = useState(0);
   // index = position de l’image courante dans le tableau "images"
   // setIndex = fonction pour changer cette position
 
-  const total = Array.isArray(images) ? images.length : 0;
-  // Nombre total d’images (si "images" n’est pas un tableau, total = 0)
+  const total = images.length;
+  // Je crée une variable locale "total" qui contient le nombre d’images dans le carrousel 
 
-  if (total === 0) return null;
-  // Si aucune image, on n’affiche rien (évite un carrousel vide)
+  // Mise en place de la LOGIQUE CYCLIQUE
+  // Utilisation de l'opérateur modulo (%) permettant au Carrousel de boucler à l'infini
+  const next = () => setIndex((i) => (i + 1) % total);
+  // Avancer : passe à l’image suivante, et revient au début après la dernière (boucle)
 
-  const next = () => setIndex(i => (i + 1) % total);
-  // Logique de navigation cyclique (le modulo %)
-  // Passe à l’image suivante, et revient au début après la dernière (boucle)
-
-  const prev = () => setIndex(i => (i - 1 + total) % total);
-  // Logique de navigation cyclique (le modulo %)
-  // Passe à l’image précédente, et va à la dernière si on est au début (boucle)
+  const prev = () => setIndex((i) => (i - 1 + total) % total);
+  // Reculer : passe à l’image précédente, et va à la dernière si on est au début (boucle)
 
   const showControls = total > 1;
   // Affiche les flèches + compteur uniquement s’il y a plus d’une image
 
-  // Rendu du carrousel
+  // RENDU DU CARROUSSEL
   return (
     // Conteneur principal du carrousel
-    // - style(height) si la prop "height" est fournie (sinon, laisse le CSS gérer)
-    <div className="slideshow" style={height ? { height } : undefined}>
+    <div className="slideshow">
       {/* Image courante (selon "index") */}
       <img
-        src={images[index]}                       // Utilise l'index pour afficher l'image courante
-        alt={`${altBase} ${index + 1}/${total}`}  // Alt dynamique : "Photo logement 2/5"
-        className="slideshow-image"               // Classe pour le style (cover, etc.)
-        draggable="false"                         // Empêche le « drag » d’image au clic
+        src={images[index]}                      // Utilise l'index pour afficher l'image courante
+        alt={`${altBase} ${index + 1}/${total}`} // Alt dynamique : "Photo logement 1/5"
+        className="slideshow-image"              // Classe pour le style (cover, etc.)
       />
 
-      {/* Affichage conditionnel des contrôles (flèches et compteur) */}
+      {/* Affichage conditionnel, utilisation de l'opérateur logique ET (&&) 
+      des contrôles (flèches et compteur) */}
       {showControls && (
         <>
           {/* Bouton flèche gauche (image précédente) */}
           <button className="slideshow-arrow left" type="button" onClick={prev}>
             {/* Icône SVG (chevron gauche) */}
-            {/* width/height à 100% → le SVG occupe toute la zone du bouton, sans bloc 150x150 */}
             <svg viewBox="0 0 48 48" width="100%" height="100%">
               <path
                 d="M28 36 L16 24 L28 12"   // Trois points reliés → chevron gauche
@@ -83,6 +77,7 @@ export default function Slideshow({ images = [], altBase = 'Photo logement', hei
     </div>
   );
 }
+
 
 
 

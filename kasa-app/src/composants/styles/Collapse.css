@@ -84,16 +84,6 @@
 
 }
 
-/* Réduit les animations si l’utilisateur préfère */
-@media (prefers-reduced-motion: reduce) {
-  .collapse-content {
-    transition: none;
-  }
-  .collapse-icon {
-    transition: none;
-  }
-}
-
 /* -----------------
    Responsive 
    ----------------- */

@@ -30,7 +30,7 @@ export default function Accueil() {
       })
       .then((data) => {
         // Met à jour l'état avec les données récupérées On s’attend à un tableau → sinon on force un tableau vide
-        setProperties(Array.isArray(data) ? data : []);
+        setProperties(data);
       })
       .catch((e) => {
         // Capture et affiche l'erreur si le fetch échoue 
@@ -45,12 +45,16 @@ export default function Accueil() {
 
   // 3. Rendu conditionnel des états (loading/error)
   if (loading) {
-    return <div className="text-center py-8">Chargement des propriétés…</div>;
+    return <div>Chargement des propriétés…</div>;
   } // Affichage conditionnel de l'état "chargement"
 
   if (error) {
-    return <div className="text-center py-8 text-red-500">Erreur : {error}</div>;
-  }// Affichage conditionnel de l'état "erreur"
+  return (
+    <div>
+      Erreur : {error}
+    </div>
+  );
+}// Affichage conditionnel de l'état "erreur"
 
 
   // 4. Rendu principal de l apage (utilisation des composants)
@@ -59,7 +63,6 @@ export default function Accueil() {
       {/* Bannière statique en haut de page */}
       <Banner
         title="Chez vous, partout et ailleurs"  // Le titre est passé en prop
-        overlay                                 // On force le filtre sombre
         alt="Paysage de forêt et de montagnes"
       />
 
@@ -74,7 +77,7 @@ export default function Accueil() {
             ))
           ) : (
             // aucun logement à afficher
-            <p className="text-center text-gray-500 col-span-full">
+            <p>
               Aucune propriété trouvée.
             </p>
           )}

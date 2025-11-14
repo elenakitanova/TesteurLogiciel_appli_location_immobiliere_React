@@ -46,17 +46,13 @@
     padding: 0;
   }
   
-@media (max-width: 1024px) {
-  .card-grid {
-    grid-template-columns: repeat(2, 340px);
-    gap: 40px;
-  }
-}
+
 
 /* 1 colonne en mobile */
 @media (max-width: 768px) {
   .card-grid {
     grid-template-columns: 1fr;  /* prend toute la largeur dispo */
+    gap: 40px;
   }
   /* si ta Card a une largeur fixe, assure-toi qu'elle puisse s'étirer : */
   .card-grid > * { width: 100%; }

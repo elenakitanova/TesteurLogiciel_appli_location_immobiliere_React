@@ -5,7 +5,7 @@ import './styles/APropos.css';
 import Bannerapropos from '../assets/images/Bannerapropos.png'; 
 
 
-// Données statiques pour les 4 accordéons
+// TBLEAU STATIQUE, Données statiques pour les 4 accordéons
 // Chaque item alimente un <Collapse /> : un titre + un texte
 // On les laisse hors du composant pour éviter de recréer le tableau à chaque rendu
 const aboutData = [
@@ -48,14 +48,13 @@ export default function APropos() {
       <section className="apropos-container" aria-label="Informations à propos de Kasa">
         {/*
         Conteneur des sections 
-        liste de Collapse rendus à partir de aboutData
+        liste de COLLAPSE rendus à partir de aboutData
       */}
         <div className="collapse-list">
           {/*
-          Mapping des données statiques du le tableau aboutData pour générer les 4 Collapse 
-          un <Collapse /> par item
-            - key={id} : indispensable pour les listes React (améliore les performances et évite des warnings)
-            - title / content : props attendues par le composant Collapse
+          Mapping des données statiques du le tableau aboutData et boucle dessus 
+          pour générer les 4 COLLAPSE => un <Collapse /> par item
+          chaque instance est créée en passant le key={id} et les chaînes de caractères des props "title" et "content du tableau
           */}
           {aboutData.map(({ id, title, content }) => (
             <Collapse key={id} title={title} content={content} />

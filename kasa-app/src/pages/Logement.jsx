@@ -61,40 +61,33 @@ export default function Logement() {
     return <main className="logement-page">Chargement...</main>;
   }
 
-  // Par sécurité : si on arrive ici sans data (ex: redirection déjà partie), on ne rend rien
-  if (!property) return null;
+  // --- DONNEES PRÊTES POUR L'AFFICHAGE ---
+  // Liste d’images pour le diaporama. La page a maintenant un tableau d'URLs : ['url1', 'url2', 'url3', ...]
+const images = property.pictures;
 
-  // --- Données prêtes pour l’affichage ---
+  // Note convertie en nombre, on suppose que rating est bien dans le JSON
+const rating = Number(property.rating);
 
-  // Liste d’images pour le diaporama (tableau vide si absent)
-  // Préparation des props : Assurer qu'elles sont des tableaux/nombres valides
-  const images = property.pictures || [];
-
-  // On convertit simplement en nombre
-  const rating = Number(property.rating) || 0;
-
-  // --- Rendu de la page de détail ---
-{/* Composition de la page avec les props extraites de 'property' */}
+  // --- RENDU DE LA PAGE ---
+  //Composition de la page avec les props extraites de 'property'
+  //La page Logement donne le tableau d'images au Slideshow
   return (
     <main className="logement-page"> 
     
       {/*
-        1) Diaporama (Slideshow)
+        1) Le Slideshow :
         - Reçoit la liste des images et un texte alt de base (le titre)
         - Gère en interne les flèches (index) et le compteur 1/N / la navigation cyclique 
       */}
-      <Slideshow images={images} altBase={property?.title || 'Photo logement'} />
+      <Slideshow images={images} altBase={property.title} />
 
       {/*
         2) Bandeau d’infos sous le diaporama
-           Desktop : 
              - Colonne gauche : titre + lieu + tags
              - Colonne droite : hôte (nom + photo) + étoiles
-           Mobile :
-             - Empilé verticalement (géré via CSS)
       */}
       <section className="logement-header" aria-label="Informations du logement">
-        {/* Colonne gauche : Titre/Lieu + Tags */}
+        {/* COLONNE GAUCHE : Titre/Lieu + Tags */}
         <div className="header-left">
           {/* Titre (ex: “Cozy loft…”) + Localisation (ex: “Paris, Île-de-France”) */}
           <TitreLieu title={property.title} location={property.location} />
@@ -109,41 +102,40 @@ export default function Logement() {
           </div>
         </div>
 
-        {/* Colonne droite : Hôte + Étoiles */}
+        {/* COLONNE DROITE : Hôte + Étoiles */}
         <div className="header-right">
-          {/* {/* Hôte (Nom + photo de l’hôte )*/} 
-          <div className="hote">
-            <div className="hote-name">{property?.host?.name}</div>
-            <img
-              className="hote-picture"
-              src={property?.host?.picture}
-              alt={property?.host?.name}
-            />
-          </div>
+          {/* Carte de l’hôte : nom + photo, alignée à droite */}
+            <Hote
+            name={property.host.name}
+            picture={property.host.picture}
+            align="right"
+        />
 
-           {/* Génération des étoiles basée sur le rating */}
-            {/* Note en étoiles (0 à 5) */}
-          <div className="etoiles">
+        {/* Note en étoiles (0 à 5) */}
+        <div className="etoiles">
             <Etoiles rating={rating} />
-            {/* prop 'rating' est convertie en nombre */}
-          </div>
         </div>
+       </div>
       </section>
 
       {/*
-        3) Deux sections déroulantes (COLLAPSE) : Description et Équipements
+        3) Sections déroulantes (COLLAPSE) : Description et Équipements
            - On réutilise le même composant que sur A Propos
+           Composant flexible et modulaire
       */}
       <section className="logement-collapses" aria-label="Description et équipements">
-        {/* Texte de présentation du logement */}
-        <Collapse title="Description" content={property?.description || ''} />
+        {/* Affiche le texte brut reçu de présentation du logement */}
+        {/* Description : on fait confiance à l’API pour fournir une string */}
+        <Collapse title="Description" content={property.description} />
 
-        {/* Liste des équipements (ul/li) */}
+        {/* Liste des équipements (ul/li)
+        La page Logement boucle sur le tableau des équipements et envoie directement une 
+        liste HTML (<ul>) dans la prop content */}
         <Collapse
           title="Équipements"
           content={
             <ul className="equip-list">
-              {(property?.equipments || []).map((eq, i) => (
+              {property.equipments.map((eq, i) => (
                 <li key={`${eq}-${i}`}>{eq}</li>
               ))}
             </ul>
