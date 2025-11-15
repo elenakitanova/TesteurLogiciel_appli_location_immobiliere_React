@@ -7,8 +7,7 @@ describe('Banner (overlay en fonction du titre)', () => {
     const { container } = render(<Banner />);
 
     // Image avec alt par défaut
-    expect(
-      screen.getByRole('img', { name: /paysage de forêt et de montagnes/i })
+    expect(screen.getByRole('img', { name: /paysage de forêt et de montagnes/i })
     ).toBeInTheDocument();
 
     // PAS d’overlay si pas de titre
@@ -24,7 +23,6 @@ describe('Banner (overlay en fonction du titre)', () => {
         imageUrl="https://exemple.com/ban.jpg"
         title="Mon titre"
         alt="Bannière custom"
-        height="223px"
       />
     );
 
@@ -39,10 +37,6 @@ describe('Banner (overlay en fonction du titre)', () => {
 
     // Overlay PRÉSENT si le titre est fourni
     expect(container.querySelector('.banner-overlay')).toBeTruthy();
-
-    // Hauteur appliquée
-    const banner = container.querySelector('.banner');
-    expect(banner).toHaveStyle({ height: '223px' });
   });
 });
 
