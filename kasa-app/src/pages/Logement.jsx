@@ -9,18 +9,18 @@ import Collapse from '../composants/Collapse.jsx';
 import './styles/Logement.css';
 
 /** La page : 
- * 1. Récupère le paramètre d'URL dynamique (:id) via useParams().
- * 2. Lance l'appel API ciblé GET /api/properties/:id.
- * 3. Gère la redirection 404 si l'ID n'est pas trouvé (via useNavigate).
+ * 1. Récupère le paramètre d'URL dynamique (:id) via useParams()
+ * 2. Lance l'appel API ciblé GET /api/properties/:id
+ * 3. Gère la redirection 404 si l'ID n'est pas trouvé (via useNavigate)
  */
 export default function Logement() {
   // 1) Extraction du paramètre id présent dans l'URL et du hook de navigation. Exemple : /logement/123 → id = "123"
   const { id } = useParams();
 
-  // Fonction pour gérer les redirections programmatiques, permet de rediriger (ici vers /404 en cas d’ID invalide)
+  // Redirection vers /404 en cas d’ID invalide
   const navigate = useNavigate();
 
-  // État pour stocker la fiche de logement (null initialement) et l'état de chargement
+  // État pour stocker la fiche de logement et l'état de chargement
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -96,7 +96,7 @@ const rating = Number(property.rating);
           {/* Tags : badges sur une ligne, scrollables si trop nombreux */}
           <div className="tags-row">
             {/* Mapping des tags avec une clé unique */}
-            {(property.tags || []).map((t, i) => (
+            {property.tags.map((t, i) => (
               <Tag key={`${t}-${i}`} text={t} />
             ))}
           </div>
@@ -125,12 +125,11 @@ const rating = Number(property.rating);
       */}
       <section className="logement-collapses" aria-label="Description et équipements">
         {/* Affiche le texte brut reçu de présentation du logement */}
-        {/* Description : on fait confiance à l’API pour fournir une string */}
         <Collapse title="Description" content={property.description} />
 
         {/* Liste des équipements (ul/li)
-        La page Logement boucle sur le tableau des équipements et envoie directement une 
-        liste HTML (<ul>) dans la prop content */}
+        La page Logement boucle sur le tableau des équipements avec une clé unique 
+        et envoie directement une liste HTML (<ul>) dans la prop content */}
         <Collapse
           title="Équipements"
           content={

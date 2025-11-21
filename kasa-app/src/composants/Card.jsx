@@ -2,15 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles/Card.css';
 
-/* Au clic, on navigue vers /logement/:id (détails du logement)
- * Props :
- * - property : { id, title, cover } (au minimum)
+/* Composant utilisé dans une boucle sur la page d'Accueil {properties.map((p) => (
+ * Composant interactif → Au clic, on navigue vers /logement/:id (détails du logement)
+ * Props : la page d'Accueil passe à card l'objet de données property 
+ * qui contient au minimum l'id, le title et le cover
  */
 
 const Card = ({ property }) => {
   return (
     // Link = lien interne (React Router), permet la navigation interne → pas de rechargement de page
-    // On construit l'URL de détail avec l'id du logement
+    // On construit l'URL dynamique de détail avec l'id du logement
     <Link to={`/logement/${property.id}`} className="card-link">
       {/* article = bloc de contenu autonome (sémantique HTML) */}
       <article className="card">

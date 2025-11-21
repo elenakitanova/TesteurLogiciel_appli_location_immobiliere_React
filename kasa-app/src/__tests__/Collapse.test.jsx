@@ -51,13 +51,13 @@ describe('Collapse', () => {
 
     // 1er clic : on ouvre
     fireEvent.click(button);
-    expect(button).toHaveAttribute('aria-expanded', 'true');
+    expect(button).toHaveClass('open');
     expect(content).toHaveClass('open');
     expect(screen.getByText('Texte de description')).toBeInTheDocument();
 
     // 2e clic : on referme
     fireEvent.click(button);
-    expect(button).toHaveAttribute('aria-expanded', 'false');
+    expect(button).not.toHaveClass('open');
     expect(content).not.toHaveClass('open');
     // le contenu est toujours dans le DOM, mais visuellement caché par le CSS
   });

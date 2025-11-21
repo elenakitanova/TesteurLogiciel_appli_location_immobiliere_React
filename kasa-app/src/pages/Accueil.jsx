@@ -12,7 +12,7 @@ import './styles/Accueil.css';
 // 1. Initialisation des états
 export default function Accueil() {
   // Hook useState : Stocke la liste des logements après l'appel API
-  const [properties, setProperties] = useState([]); // Données
+  const [properties, setProperties] = useState([]); // L'état principal qui stock les données
   // Hook useState : Indique l'état de chargement initial (true au départ)
   const [loading, setLoading] = useState(true); // UX
   // Hook useState : message d’erreur simple si l’appel échoue / stocke une éventuelle erreur de fetch
