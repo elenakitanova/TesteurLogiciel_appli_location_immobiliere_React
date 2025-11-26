@@ -70,9 +70,11 @@ export default function Accueil() {
       <section className="gallery-container">
         <div className="card-grid">
           {properties.length > 0 ? (
-            // On génère une Card par logement
+            // On boucle sur le tableau complet de logemment et on génère
+            // une Card par logement
             properties.map((p) => (
-              // key = p.id (on suppose l’API stable renvoie bien un id)
+              // On passe l'objet de données complet (property={p}) à
+              // chaque carte avec une clé unique
               <Card key={p.id} property={p} />
             ))
           ) : (

@@ -10,8 +10,9 @@ import './styles/Card.css';
 
 const Card = ({ property }) => {
   return (
-    // Link = lien interne (React Router), permet la navigation interne → pas de rechargement de page
-    // On construit l'URL dynamique de détail avec l'id du logement
+    // Utilise la librairie React Router et la balise <Link> pour créer 
+    // dynamiquement l'URL de la page de détail en injectant l'id du logement dans l'adresse 
+    // => pas de rechargement de page
     <Link to={`/logement/${property.id}`} className="card-link">
       {/* article = bloc de contenu autonome (sémantique HTML) */}
       <article className="card">
