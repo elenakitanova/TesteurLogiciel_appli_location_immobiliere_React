@@ -22,10 +22,10 @@ const Card = ({ property }) => {
           alt={property.title}          // texte alternatif (accessibilité)
           className="card-image"
         />
-        {/* Calque d’overlay (dégradé/assombrissement), stylé en CSS */}
+        {/* Calque d’overlay stylé en CSS */}
         <div className="card-overlay"></div>
 
-        {/* Affichage du titre du logement, affiché par-dessus l'image */}
+        {/* Affichage du titre du logement par-dessus l'image */}
         <h2 className="card-title">{property.title}</h2>
       </article>
     </Link>

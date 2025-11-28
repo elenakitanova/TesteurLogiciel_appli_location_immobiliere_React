@@ -12,7 +12,7 @@
   align-items: center;
   width: 100%;
   margin: 0;
-  min-height: 54px; /* > height pour laisser respirer */
+  min-height: 54px; 
   padding: 10px 20px 10px 15px;
   background: #FF6060;
   border-radius: 5px;
@@ -20,7 +20,7 @@
   cursor: pointer;
   z-index: 10;
   position: relative;
-  color: #fff; /* pour que les SVG inline (stroke="currentColor") héritent la couleur */
+  color: #fff;                      
 }
 
 .collapse-header.open {
@@ -46,13 +46,24 @@
   text-align: left;
 }
 
-/* Icône */
+/* Icône (chevron) */
 .collapse-icon {
-  display: flex;
-  align-items: center;
-  color: #fff; /* pour les SVG inline */
+  transform-origin: 50% 50%;
+  transform: rotate(0deg);
+  transition: transform var(--chev-dur, 1.2s) ease;
 }
 
+.collapse-icon svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+/* Gestion de la Rotation */
+.collapse-header.open .collapse-icon {
+  transform: rotate(-180deg);
+  --chev-dur: 0.6s;
+}
 
 /* Zone déroulée */
 .collapse-content {
@@ -81,29 +92,29 @@
   font-weight: normal;
   line-height: 1.5;
   box-sizing: border-box;
-
 }
 
+
 /* -----------------
-   Responsive 
+   Responsive
    ----------------- */
 @media (max-width: 768px) {
   .collapse-wrapper {
     width: 90%;
-    margin: 0 auto; 
+    margin: 0 auto;
   }
   .collapse-header {
-    min-height: 44px; /* meilleure cible tactile */
+    min-height: 44px;    
     padding: 8px 12px;
   }
   .collapse-title {
-    font-size: 16px; /* 13px était trop petit */
+    font-size: 16px;
   }
   .collapse-icon svg {
     width: 18px;
     height: 18px;
   }
   .collapse-text-content {
-    font-size: 14px; 
-}
+    font-size: 14px;
+  }
 }

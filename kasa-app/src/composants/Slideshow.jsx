@@ -20,6 +20,7 @@ export default function Slideshow({ images = [], altBase = 'Photo logement' }) {
   const prev = () => setIndex((i) => (i - 1 + total) % total);
   // Reculer : passe à l’image précédente, et va à la dernière si on est au début (boucle)
 
+  // AFFICHAGE CONDITIONNEL DES FLECHES ET DU COMPTEUR
   const showControls = total > 1;
   // Affiche les flèches + compteur uniquement s’il y a plus d’une image
 

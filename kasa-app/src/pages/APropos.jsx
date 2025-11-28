@@ -41,7 +41,7 @@ export default function APropos() {
     <div className="apropos-page">
       
       <Banner imageUrl={Bannerapropos} overlay={false} alt="Bannière À propos" /> 
-      {/* Utilisation conditionnelle de Banner (overlay=false) => on désactive le voile sombre 
+      {/* Utilisation conditionnelle de BANNER (overlay=false) => on désactive le voile sombre 
       imageUrl : on passe l’image locale importée
       */}
 

@@ -60,13 +60,13 @@ export default function Accueil() {
   // 4. Rendu principal de l apage (utilisation des composants)
   return (
     <div className="accueil-page">
-      {/* Bannière statique en haut de page */}
+      {/* BANNIERE statique en haut de page */}
       <Banner
         title="Chez vous, partout et ailleurs"  // Le titre est passé en prop
         alt="Paysage de forêt et de montagnes"
       />
 
-      {/* Génération de la Grille des logements (cartes) */}
+      {/* CARDS Génération de la Grille des logements */}
       <section className="gallery-container">
         <div className="card-grid">
           {properties.length > 0 ? (
